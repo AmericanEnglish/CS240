@@ -1,12 +1,28 @@
 class Gradebook:
     """creates a gradebook object"""
-    def __init__(self, fileobject, days):
-        """(Gradebook, list of students, int)
+    def __init__(self, fileobject):
+        """(Gradebook, fileobject)
 
         Takes a file object (file io wrapper) and the amount of days that have 
         passed.
         """
-        self.days = days
+        for line in fileobject:
+            line = line.strip().lower()
+            line = line.split()
+            self.grades = []
+            studentgrades = []
+            if line[0] == 'student':
+                if studentgrades != []:
+                    self.grades.append(Student(name, studentgrades))
+                name = line[1]
+                studentgrades = []
+            elif line[0] == 'grade':
+                studentgrades.append(
+                            Grade(line[1], line[2], line[3], line[4]))
+            elif line[0] == 'days':
+                self.days = line[1]
+
+
 
 
 class Student:
@@ -40,3 +56,4 @@ class Grade:
         """
         return "{} {} {} {}".format(self.name, self.dueday, self.totalpoints,
                                     self.earnedpoints)
+
