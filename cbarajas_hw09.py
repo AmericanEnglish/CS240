@@ -21,8 +21,9 @@ class Gradebook:
                             Grade(line[1], line[2], line[3], line[4]))
             elif line[0] == 'days':
                 self.days = line[1]
-
-
+    def __str__(self):
+        for item in self.grades:
+            print(Student)
 
 
 class Student:
@@ -33,6 +34,11 @@ class Student:
         """
         self.name = name
         self.grades = listy
+
+    def __str__(self):
+        print(self.name + '\n')
+        for item in self.grades:
+            print(item + '\n')
 
 
 class Grade:
@@ -57,3 +63,32 @@ class Grade:
         return "{} {} {} {}".format(self.name, self.dueday, self.totalpoints,
                                     self.earnedpoints)
 
+
+def studentgen(n, grades, days, filename):
+    """(int) -> str
+    Randomly generates a file containing random students and grades
+    """
+    from random import choice
+    from random import randint
+    x = 1
+    alphabet = 'abcdefghijklmnopqrstuvwxyz'
+    with open(filename, 'w') as genfile:
+        genfile.write('DAYS {}\n'.format(days))
+        while x <= n:
+            name = ''
+            for i in range(randint(4, 7)):
+                #name = 'Student' + str(x)
+                name += choice(alphabet)
+            genfile.write('Student {}\n'.format(name))
+            for num in range(randint(1, grades)):
+                workname = choice(['TEST', 'FINAL', 'HW', 'LAB'])
+                maxval = randint(1, 100)
+                points = '{} {} {}'.format(randint(1, days), maxval, randint(1, maxval))
+                genfile.write('GRADE {} {}\n'.format(workname, points))
+            genfile.write('#lolknoob\n')
+            x += 1
+    return filename
+
+
+if __name__ == '__main__':
+    pass
