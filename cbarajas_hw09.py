@@ -15,7 +15,9 @@ class Gradebook:
             studentgrades = []
             if line[0] == 'student':
                 if studentgrades != []:
-                    self.grades.append(Student(name, studentgrades))
+                    tempstudent = Student(name, studentgrades)
+                    tempstudent.days(self.days)
+                    self.grades.append(tempstudent)
                 name = line[1]
                 studentgrades = []
             elif line[0] == 'grade':
@@ -46,19 +48,22 @@ class Student:
         """
         self.name = name
         self.grades = listy
+        self.days = None
 
     def __str__(self):
         return '{} {} {}'.format(self.name, self.midterm_grade(), self.final_grade())
 
-    def midterm_grade(self, days):
+    def midterm_grade(self):
         """(Student) -> str
 
         Generates a midterm grade
         """
         totalpoints = 0
         earnedpoints = 0
+        if self.days == None:
+            self.days = int(input('days = '))
         for item in self.grades:
-            if item.dueday < days // 2:
+            if item.dueday < self.days // 2:
                 totalpoints += item.totalpoints
                 earnedpoints += item.earnedpoints
         midterm_grade = round(earnedpoints / totalpoints * 100, 1)
@@ -74,6 +79,14 @@ class Student:
             earnedpoints += item.earnedpoints
         final_grade = round(earnedpoints / totalpoints * 100, 1)
         return final_grade
+
+    def days(self, days):
+        """(Student, int) -> None
+
+        Sets the value for days in the Student object. This value is required
+        for calculating midterm grades.
+        """
+        self.days = days
 
 
 class Grade:
@@ -128,6 +141,10 @@ def main():
     filein = input('File To Be Read: ')
     fileout = input('File To Be Written To: ')
     with open(filein, 'r') as filetoread:
-        with open(fileout, 'a')
+        with open(fileout, 'a') as filetowrite:
+            book = Gradebook(filetoread)
+            book.write_summary(filetowrite)
+
+
 if __name__ == '__main__':
     pass
