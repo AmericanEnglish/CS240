@@ -1,8 +1,10 @@
+import io
+
+
 class Gradebook:
     """creates a gradebook object"""
     def __init__(self, fileobject):
         """(Gradebook, fileobject)
-
         Takes a file object (file io wrapper) and the amount of days that have 
         passed.
         """
@@ -21,24 +23,57 @@ class Gradebook:
                             Grade(line[1], line[2], line[3], line[4]))
             elif line[0] == 'days':
                 self.days = line[1]
+        self.contents = io.StringIO()
+
     def __str__(self):
+        return self.contents.getvalue()
+
+    def write_summary(outfile):
+        """(fileobject, StringIO) -> None
+
+        Takes a fileobject that is open for writing and then writes the
+        contents of the StringIO to the file.
+        """
         for item in self.grades:
-            print(Student)
+            self.contents.write(item)
+        outfile.write(contents.getvalue())
 
 
 class Student:
     def __init__(self, name, listy):
         """(Student, str, list of Grade object) -> None
-
         Initializes student object using a list of Grade objects and their name
         """
         self.name = name
         self.grades = listy
 
     def __str__(self):
-        print(self.name + '\n')
+        return '{} {} {}'.format(self.name, self.midterm_grade(), self.final_grade())
+
+    def midterm_grade(self, days):
+        """(Student) -> str
+
+        Generates a midterm grade
+        """
+        totalpoints = 0
+        earnedpoints = 0
         for item in self.grades:
-            print(item + '\n')
+            if item.dueday < days // 2:
+                totalpoints += item.totalpoints
+                earnedpoints += item.earnedpoints
+        midterm_grade = round(earnedpoints / totalpoints * 100, 1)
+        return midterm_grade
+
+    def final_grade(self):
+        """(Student) -> str
+        """
+        totalpoints = 0
+        earnedpoints = 0
+        for item in self.grades:
+            totalpoints += item.totalpoints
+            earnedpoints += item.earnedpoints
+        final_grade = round(earnedpoints / totalpoints * 100, 1)
+        return final_grade
 
 
 class Grade:
@@ -57,7 +92,6 @@ class Grade:
 
     def __str__(self):
         """(Grade) -> str
-
         Returns the string of grades
         """
         return "{} {} {} {}".format(self.name, self.dueday, self.totalpoints,
@@ -90,5 +124,10 @@ def studentgen(n, grades, days, filename):
     return filename
 
 
+def main():
+    filein = input('File To Be Read: ')
+    fileout = input('File To Be Written To: ')
+    with open(filein, 'r') as filetoread:
+        with open(fileout, 'a')
 if __name__ == '__main__':
     pass
