@@ -8,37 +8,38 @@ class Gradebook:
         Takes a file object (file io wrapper) and the amount of days that have 
         passed.
         """
+        studentgrades = []
+        self.grades =[]
         for line in fileobject:
             line = line.strip().lower()
             line = line.split()
-            self.grades = []
-            studentgrades = []
             if line[0] == 'student':
                 if studentgrades != []:
                     tempstudent = Student(name, studentgrades)
-                    tempstudent.days(self.days)
+                    tempstudent.setdays(days)
                     self.grades.append(tempstudent)
                 name = line[1]
                 studentgrades = []
             elif line[0] == 'grade':
-                studentgrades.append(
-                            Grade(line[1], line[2], line[3], line[4]))
+                fodder = Grade(line[1], int(line[2]), int(line[3]), int(line[4]))
+                studentgrades.append(fodder)
             elif line[0] == 'days':
-                self.days = line[1]
+                self.days = int(line[1])
+                days = self.days
         self.contents = io.StringIO()
 
     def __str__(self):
         return self.contents.getvalue()
 
-    def write_summary(outfile):
+    def write_summary(self, outfile):
         """(fileobject, StringIO) -> None
 
         Takes a fileobject that is open for writing and then writes the
         contents of the StringIO to the file.
         """
         for item in self.grades:
-            self.contents.write(item)
-        outfile.write(contents.getvalue())
+            self.contents.write('{}\n'.format(str(item)))
+        outfile.write(self.contents.getvalue())
 
 
 class Student:
@@ -71,7 +72,7 @@ class Student:
 
     def final_grade(self):
         """(Student) -> str
-        """
+        Calculates the final grade for the Student"""
         totalpoints = 0
         earnedpoints = 0
         for item in self.grades:
@@ -80,7 +81,7 @@ class Student:
         final_grade = round(earnedpoints / totalpoints * 100, 1)
         return final_grade
 
-    def days(self, days):
+    def setdays(self, days):
         """(Student, int) -> None
 
         Sets the value for days in the Student object. This value is required
@@ -127,6 +128,7 @@ def studentgen(n, grades, days, filename):
                 #name = 'Student' + str(x)
                 name += choice(alphabet)
             genfile.write('Student {}\n'.format(name))
+            genfile.write('GRADE HW 1 10 5\n')
             for num in range(randint(1, grades)):
                 workname = choice(['TEST', 'FINAL', 'HW', 'LAB'])
                 maxval = randint(1, 100)
@@ -138,13 +140,13 @@ def studentgen(n, grades, days, filename):
 
 
 def main():
-    filein = input('File To Be Read: ')
-    fileout = input('File To Be Written To: ')
-    with open(filein, 'r') as filetoread:
-        with open(fileout, 'a') as filetowrite:
-            book = Gradebook(filetoread)
-            book.write_summary(filetowrite)
+    filein = input('File To Be Read:')
+    fileout = input('File To Be Written To:')
+    with open(filein, 'r') as readme:
+        with open(fileout, 'w') as writeme:
+            book = Gradebook(readme)
+            book.write_summary(writeme)
 
 
 if __name__ == '__main__':
-    pass
+    main()
