@@ -8,7 +8,7 @@ entry = tkinter.Entry(frame, textvariable=dna)
 entry.pack()
 button = tkinter.Button(frame, text='Count', command=lambda: tally(dna))
 button.pack()
-label = tkinter.Label(frame, text='Num As: 0 | Num Cs: 0')
+label = tkinter.Label(frame, text='Num As: 0 Num Ts: 0 Num Cs: 0 Num Gs: 0')
 label.pack()
 def tally(dnastring):
 	A.set(dnastring.get().upper().count('A'))
