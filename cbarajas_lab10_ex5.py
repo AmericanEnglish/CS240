@@ -12,7 +12,8 @@ temp = tkinter.IntVar()
 entry = tkinter.Entry(frame, textvariable=temp)
 entry.pack()
 
-Final = tkinter.Label(frame, textvariable=C))
+C=0
+Final = tkinter.Label(frame, textvariable=C)
 Final.pack()
 
 convert = tkinter.Button(frame, text='Convert', command=lambda: FtC(temp.get()))
@@ -24,3 +25,5 @@ def FtC(Temperature):
 
 quitbutton = tkinter.Button(frame, text='Quit', command=lambda: window.destroy())
 quitbutton.pack()
+
+window.mainloop()
