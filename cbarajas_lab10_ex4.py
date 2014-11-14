@@ -4,7 +4,7 @@ window = tkinter.Tk()
 frame = tkinter.Frame(window)
 frame.pack()
 
-entry = tkinter.Text(frame, width=25, height=7)
+entry = tkinter.Text(frame, width=50, height=10)
 entry.pack()
 
 button = tkinter.Button(frame, text='Count', command=lambda: tally(
