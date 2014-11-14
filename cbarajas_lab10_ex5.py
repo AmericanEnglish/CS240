@@ -20,8 +20,8 @@ convert = tkinter.Button(frame, text='Convert', command=lambda: FtC(temp))
 convert.pack()
 
 def FtC(Temperature):
-	C.set(5 / 9 * (Temperature.get() - 32))
-	Final.config(textvariable=C)
+    C.set(5 / 9 * (Temperature.get() - 32))
+    Final.config(textvariable=C)
 
 quitbutton = tkinter.Button(frame, text='Quit', command=lambda: window.destroy())
 quitbutton.pack()
