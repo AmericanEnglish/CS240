@@ -1,5 +1,6 @@
 import tkinter
-import io
+import tkinter.filedialog as dialog
+
 
 class Field:
     ''' generates a input field '''
@@ -13,13 +14,25 @@ class Field:
         self.entry = tkinter.Entry(self.frame, textvariable=self.file)
         self.entry.pack(side='left')
         self.button = tkinter.Button(self.frame, text=buttonlabel, command=lambda: None)
-        self.button.pack(side='left')
+        self.button.pack(side='right')
 
+    def filedo(self, filename):
+        self.file.set(filename)
 
+class FieldIn(Field):
+    def __init__(self, parent, entrylabel, buttonlabel):
+        super().__init__(parent, entrylabel, buttonlabel)
+        self.button.config(command=lambda: self.filedo(
+                            dialog.askopenfilename(title='File Input')))
+        self.entry.config(textvariable=self.file)
 
+class FileOut(Field):
+    def __init__(self, parent, entrylabel, buttonlabel):
+        super().__init__(parent, entrylabel, buttonlabel)
 
 
 if __name__ == '__main__':
     window = tkinter.Tk()
-    field1 = Field(window, 'Input', 'Browse')
+    field1 = FieldIn(window, 'Input', 'Browse...')
+    field2 = FieldOut(window, 'Output', 'Browse...')
     window.mainloop()
