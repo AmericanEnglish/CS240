@@ -52,5 +52,5 @@ if __name__ == '__main__':
     frame = tkinter.Frame()
     field1 = FieldIn(frame, 'Input File:', 'Browse...', 0)
     field2 = FieldOut(frame, 'Output File:', 'Browse...', 1)
-    procbutton = ProcessButton(frame, 'Process', field1, field2, 2)
+    procbutton = ProcessButton(frame, 'Process File', field1, field2, 2)
     window.mainloop()
