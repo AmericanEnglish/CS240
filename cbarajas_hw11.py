@@ -12,7 +12,7 @@ class Field:
         self.label.pack(side='left')
         self.file = tkinter.StringVar()
         self.entry = tkinter.Entry(self.frame, textvariable=self.file)
-        self.entry.pack(side='center')
+        self.entry.pack(side='left')
         self.button = tkinter.Button(self.frame, text=buttonlabel, command=lambda: None)
         self.button.pack(side='right')
 
