@@ -20,23 +20,37 @@ class Field:
 
 class FieldIn(Field):
     def __init__(self, frameZ, entrylabel, buttonlabel, n):
-        super().__init__(parent, framez, entrylabel, buttonlabel, n)
+        super().__init__(frameZ, entrylabel, buttonlabel, n)
         self.button.config(command=lambda: self.filedo(
                             dialog.askopenfilename(title='File In')))
-        self.entry.config(textvariable=self.file)
 
 class FieldOut(Field):
     def __init__(self, frameZ, entrylabel, buttonlabel, n):
-        super().__init__(parent, frameZ, entrylabel, buttonlabel, n)
+        super().__init__(frameZ, entrylabel, buttonlabel, n)
         self.button.config(command=lambda: self.filedo(
                             dialog.asksaveasfilename(title='File Out')))
 
 class ProcessButton:
-    def __init__(self, frameZ):
-        pass
+    def __init__(self, frameZ, title, entry1, entry2, n):
+        self.frame = frameZ
+        self.pull = entry1.file.get()
+        self.save = entry2.file.get()
+        self.button = tkinter.Button(self.frame, text=title, command=lambda: self.parse())
+        self.button.grid(row=n)
+
+    def parse(self):
+        print(type(self.pull))
+        print(type(self.save))
+        if self.pull == '' or self.save == '':
+            tkinter.messagebox.showerror('ERROR', 'File Not Selected')
+            return
+
+
+
 if __name__ == '__main__':
     window = tkinter.Tk()
     frame = tkinter.Frame()
-    field1 = FieldIn(window, frame, 'Input File:', 'Browse...', 0)
-    field2 = FieldOut(window, frame, 'Output File:', 'Browse...', 1)
+    field1 = FieldIn(frame, 'Input File:', 'Browse...', 0)
+    field2 = FieldOut(frame, 'Output File:', 'Browse...', 1)
+    procbutton = ProcessButton(frame, 'Process', field1, field2, 2)
     window.mainloop()
