@@ -19,17 +19,20 @@ class Field:
     def filedo(self, filename):
         self.file.set(filename)
 
+
 class FieldIn(Field):
     def __init__(self, frameZ, entrylabel, buttonlabel, n):
         super().__init__(frameZ, entrylabel, buttonlabel, n)
         self.button.config(command=lambda: self.filedo(
                             dialog.askopenfilename(title='File In')))
 
+
 class FieldOut(Field):
     def __init__(self, frameZ, entrylabel, buttonlabel, n):
         super().__init__(frameZ, entrylabel, buttonlabel, n)
         self.button.config(command=lambda: self.filedo(
                             dialog.asksaveasfilename(title='File Out')))
+
 
 class ProcessButton:
     def __init__(self, frameZ, title, entry1, entry2, n):
@@ -45,8 +48,61 @@ class ProcessButton:
         if self.pull.get() == '' or self.save.get() == '':
             mbox.showerror('ERROR', 'File Not Selected')
             return
-        
 
+
+class Student:
+    def __init__(self, name, listy, days):
+        """(Student, str, list of Grade object) -> None
+        Initializes student object using a list of Grade objects and their name
+        """
+        self.name = name
+        self.grades = listy
+        self.days = days
+
+    def __str__(self):
+        return '{} {} {}'.format(self.name, self.midterm_grade(), self.final_grade())
+
+    def midterm_grade(self):
+        """(Student) -> str
+
+        Generates a midterm grade
+        """
+        totalpoints = 0
+        earnedpoints = 0
+        if self.days == None:
+            self.days = int(input('days = '))
+        for item in self.grades:
+            if item.dueday < self.days // 2:
+                totalpoints += item.totalpoints
+                earnedpoints += item.earnedpoints
+        midterm_grade = round(earnedpoints / totalpoints * 100, 1)
+        return midterm_grade
+
+    def final_grade(self):
+        """(Student) -> str
+        Calculates the final grade for the Student"""
+        totalpoints = 0
+        earnedpoints = 0
+        for item in self.grades:
+            totalpoints += item.totalpoints
+            earnedpoints += item.earnedpoints
+        final_grade = round(earnedpoints / totalpoints * 100, 1)
+        return final_grade
+
+
+class Grade:
+    """Creates a Grade object"""
+    def __init__(self, name, dueday, totalpoints, earnedpoints):
+        """(Grade, str, int, int, int) -> None
+        
+        Takes an assignment name, the day the assignment was due, the
+        total point value of the assignment and the points that were
+        earned on the assignment.
+        """
+        self.name = name.upper()
+        self.dueday = dueday
+        self.totalpoints = totalpoints
+        self.earnedpoints = earnedpoints
 
 
 if __name__ == '__main__':
