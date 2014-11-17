@@ -43,8 +43,6 @@ class ProcessButton:
         self.button.grid(row=n)
 
     def parse(self):
-        print(self.pull.get())
-        print(self.save.get())
         if self.pull.get() == '' or self.save.get() == '':
             mbox.showerror('ERROR', 'File Not Selected')
             return
@@ -66,8 +64,10 @@ class ProcessButton:
                         studentgrades.append(fodder)
                     elif line[0] == 'days':
                         self.days = int(line[1])
+                self.grades.append(Student(name, studentgrades, self.days))
                 for item in self.grades:
                     filewrite.write('{}\n'.format(str(item)))
+        mbox.showinfo('Process File', "Operation Complete")
 
 
 class Student:
