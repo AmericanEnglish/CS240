@@ -1,7 +1,6 @@
 import tkinter
 import tkinter.filedialog as dialog
 import tkinter.messagebox as mbox
-import io
 
 
 class Field:
