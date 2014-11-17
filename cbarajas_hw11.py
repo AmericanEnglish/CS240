@@ -4,7 +4,7 @@ import tkinter.messagebox as mbox
 
 
 class Field:
-    ''' generates a input field '''
+    """ Generates a field """
     def __init__(self, frameZ, entrylabel, buttonlabel, n):
         self.frame = frameZ
         self.frame.grid(row=n)
@@ -13,21 +13,39 @@ class Field:
         self.file = tkinter.StringVar()
         self.entry = tkinter.Entry(self.frame, textvariable=self.file)
         self.entry.grid(row=n, column=1)
-        self.button = tkinter.Button(self.frame, text=buttonlabel, command=lambda: None)
+        self.button = tkinter.Button(self.frame, text=buttonlabel,
+                                                command=lambda: None)
         self.button.grid(row=n, column=2)
 
     def filedo(self, filename):
+        """Setups up the filedo method that rebinds self.file"""
         self.file.set(filename)
 
 
 class FieldIn(Field):
+    """Generates an FieldIn object that will be used to handle asking for
+    the file that is to be analyzed. FieldIn is a subclass of the generic
+    Field class"""
     def __init__(self, frameZ, entrylabel, buttonlabel, n):
+        """ (FieldIn, Frame, str, str, int) -> None
+
+        Takes a Frame that will be used to determine location inside the
+        window. Then a str 'entrylabel', that will appear to the left of
+        the entry field, to asthetically label the field. Then a str
+        called 'buttonlabel', appearing to the right of the entry field,
+        that will be used to title the button. It is recommended these
+        be set as 'Input File:' and 'Browse...' respectively. The button
+        will cause a popup to appear which will prompt for selection of
+        file and then self.file will be set to 'dir/filename.ext'.
+        """
         super().__init__(frameZ, entrylabel, buttonlabel, n)
         self.button.config(command=lambda: self.filedo(
                             dialog.askopenfilename(title='File In')))
 
 
 class FieldOut(Field):
+    """Generates a FieldOut object which handles where a file is to be
+    'written' to."""
     def __init__(self, frameZ, entrylabel, buttonlabel, n):
         super().__init__(frameZ, entrylabel, buttonlabel, n)
         self.button.config(command=lambda: self.filedo(
@@ -39,7 +57,8 @@ class ProcessButton:
         self.frame = frameZ
         self.pull = entry1.file
         self.save = entry2.file
-        self.button = tkinter.Button(self.frame, text=title, command=lambda: self.parse())
+        self.button = tkinter.Button(self.frame,
+                                text=title, command=lambda: self.parse())
         self.button.grid(row=n)
 
     def parse(self):
