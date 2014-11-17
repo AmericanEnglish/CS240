@@ -1,6 +1,7 @@
 import tkinter
 import tkinter.filedialog as dialog
 import tkinter.messagebox as mbox
+import io
 
 
 class Field:
@@ -48,7 +49,7 @@ class ProcessButton:
         if self.pull.get() == '' or self.save.get() == '':
             mbox.showerror('ERROR', 'File Not Selected')
             return
-        self.gradebook = []
+        self.grades = []
         studentgrades = []
         with open(self.pull.get(), 'r') as fileread:
             with open(self.save.get(), 'w') as filewrite:
@@ -66,6 +67,8 @@ class ProcessButton:
                         studentgrades.append(fodder)
                     elif line[0] == 'days':
                         self.days = int(line[1])
+                for item in self.grades:
+                    filewrite.write('{}\n'.format(str(item)))
 
 
 class Student:
@@ -87,8 +90,6 @@ class Student:
         """
         totalpoints = 0
         earnedpoints = 0
-        if self.days == None:
-            self.days = int(input('days = '))
         for item in self.grades:
             if item.dueday < self.days // 2:
                 totalpoints += item.totalpoints
