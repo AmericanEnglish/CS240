@@ -4,15 +4,34 @@ import tkinter.messagebox as mbox
 
 
 class Field:
-    """ Generates a field """
+    """ Generates a Field object which is used as the backbone for other
+    Field-like objects."""
     def __init__(self, frameZ, entrylabel, buttonlabel, n):
+        """(Field, Frame, str, str, Int) -> None
+
+        This init will be used to generate the core of the Field object.
+        Stores the reference Frame object inside itself for ease of 
+        reference purposes. Then generates a generic label title using
+        'entrylabel' which will then be placed to the left of the entry
+        field. Then 'buttonlabel' will be used to title the Button object
+        which will be place to the right of the entry field. The entire
+        frame will be setup using a grid where n is the row in the grid
+        of the frame that the widget is to be placed.
+        """
         self.frame = frameZ
         self.frame.grid(row=n)
+        #Generates label and sets the text to be displayed
         self.label = tkinter.Label(self.frame, text=entrylabel)
+        #Sticks the label to always be on the lefthand side of the grid and
+        #pads it to make it easy on the eyes.
         self.label.grid(row=n, column=0, sticky='W', padx=20)
+        #Readies self.file for future use
         self.file = tkinter.StringVar()
+        #Prepares the Entry widget and makes it so that the text can be
+        #entered manually or imported from the popup for file selection
         self.entry = tkinter.Entry(self.frame, textvariable=self.file)
         self.entry.grid(row=n, column=1)
+        #Readies the button for generic usage
         self.button = tkinter.Button(self.frame, text=buttonlabel,
                                                 command=lambda: None)
         self.button.grid(row=n, column=2)
@@ -62,13 +81,37 @@ class ProcessButton:
         self.button.grid(row=n)
 
     def parse(self):
+        """(ProcessButton) -> None
+
+        If FieldIn.file or FieldOut.file is empty, usually due to not
+        selecting a file using the buttons associated with the respective
+        objects then parse will produce an error popup indicating that
+        a file has not be selected.
+
+        parse reads the grades file at the location stored in self.pull.
+        The grades file uses the following format:
+
+        DAYS Int
+        #comments are unneeded and ignored
+        STUDENT NAME
+        GRADE NAME Duedate(Int) Totalpoints(Int) PointsEarned(Int)
+        STUDENT NAME
+        GRADE NAME Duedate(Int) Totalpoints(Int) PointsEarned(Int)
+
+        Then parse will write to the file to the location stored in 
+        self.save. When parse is finished it will display a popup
+        that says 'Operation Completed'
+
+        """
         if self.pull.get() == '' or self.save.get() == '':
             mbox.showerror('ERROR', 'File Not Selected')
             return
         self.grades = []
         studentgrades = []
+        #Preps both files for use
         with open(self.pull.get(), 'r') as fileread:
             with open(self.save.get(), 'w') as filewrite:
+                #Begins reading file
                 for line in fileread:
                     line = line.strip().lower()
                     line = line.split()
@@ -83,7 +126,10 @@ class ProcessButton:
                         studentgrades.append(fodder)
                     elif line[0] == 'days':
                         self.days = int(line[1])
+                #Appends final Student object
                 self.grades.append(Student(name, studentgrades, self.days))
+                #Writes the Student objects string value into the file open
+                #for writing
                 for item in self.grades:
                     filewrite.write('{}\n'.format(str(item)))
         mbox.showinfo('Process File', "Operation Complete")
