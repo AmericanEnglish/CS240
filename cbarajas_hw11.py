@@ -1,7 +1,6 @@
 import tkinter
 import tkinter.filedialog as dialog
 import tkinter.messagebox as mbox
-import io
 
 
 class Field:
@@ -44,8 +43,6 @@ class ProcessButton:
         self.button.grid(row=n)
 
     def parse(self):
-        print(self.pull.get())
-        print(self.save.get())
         if self.pull.get() == '' or self.save.get() == '':
             mbox.showerror('ERROR', 'File Not Selected')
             return
