@@ -1,5 +1,6 @@
 import tkinter
 import tkinter.filedialog as dialog
+import tkinter.messagebox as mbox
 
 
 class Field:
@@ -33,17 +34,18 @@ class FieldOut(Field):
 class ProcessButton:
     def __init__(self, frameZ, title, entry1, entry2, n):
         self.frame = frameZ
-        self.pull = entry1.file.get()
-        self.save = entry2.file.get()
+        self.pull = entry1.file
+        self.save = entry2.file
         self.button = tkinter.Button(self.frame, text=title, command=lambda: self.parse())
         self.button.grid(row=n)
 
     def parse(self):
-        print(type(self.pull))
-        print(type(self.save))
-        if self.pull == '' or self.save == '':
-            tkinter.messagebox.showerror('ERROR', 'File Not Selected')
+        print(self.pull.get())
+        print(self.save.get())
+        if self.pull.get() == '' or self.save.get() == '':
+            mbox.showerror('ERROR', 'File Not Selected')
             return
+        
 
 
 
