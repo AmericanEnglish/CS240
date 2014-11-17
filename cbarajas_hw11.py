@@ -48,6 +48,24 @@ class ProcessButton:
         if self.pull.get() == '' or self.save.get() == '':
             mbox.showerror('ERROR', 'File Not Selected')
             return
+        self.gradebook = []
+        studentgrades = []
+        with open(self.pull.get(), 'r') as fileread:
+            with open(self.save.get(), 'w') as filewrite:
+                for line in fileread:
+                    line = line.strip().lower()
+                    line = line.split()
+                    if line[0] == 'student':
+                        if studentgrades != []:
+                            self.grades.append(Student(name, studentgrades, self.days))
+                        name = line[1]
+                        studentgrades = []
+                    elif line[0] == 'grade':
+                        fodder = Grade(line[1], int(line[2]), int(line[3]),
+                                        int(line[4]))
+                        studentgrades.append(fodder)
+                    elif line[0] == 'days':
+                        self.days = int(line[1])
 
 
 class Student:
