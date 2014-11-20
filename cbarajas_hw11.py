@@ -6,7 +6,7 @@ import tkinter.messagebox as mbox
 class Field:
     """ Generates a Field object which is used as the backbone for other
     Field-like objects."""
-    def __init__(self, frameZ, entrylabel, buttonlabel, n):
+    def __init__(self, frameZ, entrylabel, buttonlabel, n, commandvariable):
         """(Field, Frame, str, str, Int) -> None
 
         This init will be used to generate the core of the Field object.
@@ -20,55 +20,18 @@ class Field:
         """
         self.frame = frameZ
         self.frame.grid(row=n)
-        #Generates label and sets the text to be displayed
         self.label = tkinter.Label(self.frame, text=entrylabel)
-        #Sticks the label to always be on the lefthand side of the grid and
-        #pads it to make it easy on the eyes.
         self.label.grid(row=n, column=0, sticky='W', padx=20)
-        #Readies self.file for future use
         self.file = tkinter.StringVar()
-        #Prepares the Entry widget and makes it so that the text can be
-        #entered manually or imported from the popup for file selection
         self.entry = tkinter.Entry(self.frame, textvariable=self.file)
         self.entry.grid(row=n, column=1)
-        #Readies the button for generic usage
         self.button = tkinter.Button(self.frame, text=buttonlabel,
-                                                command=lambda: None)
+                                    command=lambda: self.filedo(commandvariable()))
         self.button.grid(row=n, column=2)
 
     def filedo(self, filename):
         """Setups up the filedo method that rebinds self.file"""
         self.file.set(filename)
-
-
-class FieldIn(Field):
-    """Generates an FieldIn object that will be used to handle asking for
-    the file that is to be analyzed. FieldIn is a subclass of the generic
-    Field class"""
-    def __init__(self, frameZ, entrylabel, buttonlabel, n):
-        """ (FieldIn, Frame, str, str, int) -> None
-
-        Takes a Frame that will be used to determine location inside the
-        window. Then a str 'entrylabel', that will appear to the left of
-        the entry field, to asthetically label the field. Then a str
-        called 'buttonlabel', appearing to the right of the entry field,
-        that will be used to title the button. It is recommended these
-        be set as 'Input File:' and 'Browse...' respectively. The button
-        will cause a popup to appear which will prompt for selection of
-        file and then self.file will be set to 'dir/filename.ext'.
-        """
-        super().__init__(frameZ, entrylabel, buttonlabel, n)
-        self.button.config(command=lambda: self.filedo(
-                            dialog.askopenfilename(title='File In')))
-
-
-class FieldOut(Field):
-    """Generates a FieldOut object which handles where a file is to be
-    'written' to."""
-    def __init__(self, frameZ, entrylabel, buttonlabel, n):
-        super().__init__(frameZ, entrylabel, buttonlabel, n)
-        self.button.config(command=lambda: self.filedo(
-                            dialog.asksaveasfilename(title='File Out')))
 
 
 class ProcessButton:
@@ -191,7 +154,12 @@ class Grade:
 if __name__ == '__main__':
     window = tkinter.Tk()
     frame = tkinter.Frame()
-    field1 = FieldIn(frame, 'Input File:', 'Browse...', 0)
-    field2 = FieldOut(frame, 'Output File:', 'Browse...', 1)
+    
+    commandin = lambda: dialog.askopenfilename(title='File In')
+    commandout = lambda: dialog.asksaveasfilename(title='File Out')
+    
+    field1 = Field(frame, 'Input File:', 'Browse...', 0, commandin)
+    field2 = Field(frame, 'Output File:', 'Browse...', 1, commandout)
+    
     procbutton = ProcessButton(frame, 'Process File', field1, field2, 2)
     window.mainloop()
