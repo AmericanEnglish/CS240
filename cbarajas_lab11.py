@@ -1,7 +1,9 @@
 import sqlite3
 def display(cursorobj):
-    pass
-
+    var = cursorobj.fetchall()
+    for item in var:
+        print(item)
+    print('----')
 
 def main():
     con =  sqlite3.connect('census.db')
@@ -21,10 +23,17 @@ def main():
     cursor.execute("INSERT INTO Density VALUES ('Northwest Territories', 37360, 1141108.37)")
     cursor.execute("INSERT INTO Density VALUES ('Nunavut', 26745, 1925460.18)")
 
-    cursor.execute("""SELECT * FROM Density""")
+    cursor.execute("SELECT * FROM Density")
     display(cursor)
-    cursor.execute("""SELECT FROM WHERE""")
-
+    cursor.execute("SELECT province, population FROM Density")
+    display(cursor)
+    cursor.execute("SELECT province FROM Density WHERE population < 1000000")
+    display(cursor)
+    cursor.execute("""SELECT province 
+                        FROM Density 
+                            WHERE 
+                                population < 1000000 OR population > 5000000""")
+    display(cursor)
 
 if __name__ == '__main__':
     main()
