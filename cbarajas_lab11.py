@@ -4,10 +4,10 @@ def display(cursorobj):
     output = ''
     for item in var:
         # readies first item
-        output = str(item[0]) + '\n'
+        output = '{}\n'.format(str(item[0]))
         # prepares additional tuple items if there are any for str concat
         for i in range(len(item) - 1):    
-            output += '    {} \n'.format(item[i + 1])
+            output += '    {}\n'.format(item[i + 1])
         print(output)
         output = ''
     print('----')
