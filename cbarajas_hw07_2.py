@@ -90,7 +90,7 @@ def compare_tups(tuple1, tuple2):
                     return True
 
 
-def main():
+def main(roster=None):
     """(None) -> None
 
     Asks for students information in the format:
@@ -102,7 +102,8 @@ def main():
     items are then printed in order. The order alphabetical house order,
     new students first, and then alphabetical last names and first names.
     """
-    roster = []
+    if roster  == None:
+        roster = []
     answer = None
     while True:
         answer = input('Enter a student record (blank to end): ')
@@ -164,18 +165,18 @@ def listgen(n):
 
 
 if __name__ == '__main__':
-    import doctest
-    doctest.testmod()
-    thing = [('Hufflin', '2', 'Measely', 'Don'),
-        ('Gryffinpuff', '2', 'Cotter', 'Terry'),
-        ('Hufflin', '2', 'Measely', 'Winny'),
-        ('Slytherclaw', '1', 'Hickory', 'Frederick'),
-        ('Ravendor', '3', 'Danger', 'Harmony'),
-        ('Gryffinpuff', '1', 'Dovewood', 'Juna'),
-        ('Ravendor', '7', 'Cotter', 'Tilly'),
-        ('Slytherclaw', '6', 'Alloy', 'Franco')]
-    #for num in range(10):
-    #    timer(100000)
-    #print('sort_students == sort_students2:', sort_students(thing) == sort_students2(thing))
-    #main()
-    #[('Gryffinpuff', '1', 'Dovewood', 'Juna'), ('Gryffinpuff', '2', 'Cotter', 'Terry'), ('Hufflin', '2', 'Measely', 'Don'), ('Hufflin', '2', 'Measely', 'Winny'), ('Ravendor', '3', 'Danger', 'Harmony'), ('Ravendor', '7', 'Cotter', 'Tilly'), ('Slytherclaw', '1', 'Hickory', 'Frederick'), ('Slytherclaw', '6', 'Alloy', 'Franco')]
+    # import doctest
+    # doctest.testmod()
+    # thing = [('Hufflin', '2', 'Measely', 'Don'),
+    #     ('Gryffinpuff', '2', 'Cotter', 'Terry'),
+    #     ('Hufflin', '2', 'Measely', 'Winny'),
+    #     ('Slytherclaw', '1', 'Hickory', 'Frederick'),
+    #     ('Ravendor', '3', 'Danger', 'Harmony'),
+    #     ('Gryffinpuff', '1', 'Dovewood', 'Juna'),
+    #     ('Ravendor', '7', 'Cotter', 'Tilly'),
+    #     ('Slytherclaw', '6', 'Alloy', 'Franco')]
+    thing = listgen(40000)
+    thing2 = thing[:]
+    thing2.sort()
+    print('sort_students == sort_students2: {}'.format(sort_students(thing) == thing2))
+    # [('Gryffinpuff', '1', 'Dovewood', 'Juna'), ('Gryffinpuff', '2', 'Cotter', 'Terry'), ('Hufflin', '2', 'Measely', 'Don'), ('Hufflin', '2', 'Measely', 'Winny'), ('Ravendor', '3', 'Danger', 'Harmony'), ('Ravendor', '7', 'Cotter', 'Tilly'), ('Slytherclaw', '1', 'Hickory', 'Frederick'), ('Slytherclaw', '6', 'Alloy', 'Franco')]
